@@ -41,6 +41,7 @@ public:
 HashTable::HashTable() {
 	cout << "Constructing";
 	Table t(11);
+	this->table = &t;
 	this->num = 0;
 	cout << " a hash table of size " << t.size() << endl;
 
@@ -48,6 +49,7 @@ HashTable::HashTable() {
 HashTable::HashTable(size_t size) {
 	cout << "Constructing";
 	Table t(size);
+	this->table = &t;
 	this->num = 0;
 	cout << " a hash table of size " << t.size() << endl;
 }
@@ -56,7 +58,7 @@ HashTable::~HashTable(){
 }
 size_t HashTable::size()
 {
-
+	return this->table->size();
 }
 size_t HashTable::hash_function(ulint)
 {
