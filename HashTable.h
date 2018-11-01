@@ -41,7 +41,6 @@ public:
 HashTable::HashTable() {
 	cout << "Constructing";
 	Table t(11);
-	table = t;
 	this->num = 0;
 	cout << " a hash table of size " << t.size() << endl;
 
