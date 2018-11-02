@@ -18,11 +18,17 @@ public:
   void assign(unsigned long key, unsigned long value); 
 
   // extend if necessary
+  void setKey(unsigned long k) { this->key = k; }
+  void setValue(unsigned long v) { this->value = v; }
 };
 
 /* 
    Implement the assign method 
    and any methods that you may additionally need for the HashTable to work.
 */
-
+void HashNode::assign(unsigned long key, unsigned long value)
+{
+	setKey(key);
+	setValue(value);
+}
 #endif
