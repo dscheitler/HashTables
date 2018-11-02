@@ -60,18 +60,19 @@ size_t HashTable::size()
 }
 size_t HashTable::hash_function(ulint)
 {
-	size_t placeholder;
-	return placeholder;
+	//size_t placeholder;
+	//return placeholder;
 }
 ulint HashTable::getValue(ulint)
 {
-	ulint val;
-	return val;
+	//ulint val = this->table->getValue();
+	//return val;
 }
 void HashTable::insert(ulint key, ulint value)
 {
-	this->table = new HashNode(key, value);
-	//this->HashNode = N;
+	//HashNode h = HashNode(key, value);
+	this->table->insert(table->begin(), new HashNode(key, value));
+	//this->table->insert(h);
 }
 void HashTable::erase(ulint)
 {
