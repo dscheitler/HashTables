@@ -40,18 +40,16 @@ public:
 */
 HashTable::HashTable() {
 	cout << "Constructing";
-	Table t(11);
-	this->table = &t;
+	this->table = new Table(11);
 	this->num = 0;
-	cout << " a hash table of size " << t.size() << endl;
+	cout << " a hash table of size " << this->size() << endl;
 
 }
 HashTable::HashTable(size_t size) {
 	cout << "Constructing";
-	Table t(size);
-	this->table = &t;
+	this->table = new Table(size);
 	this->num = 0;
-	cout << " a hash table of size " << t.size() << endl;
+	cout << " a hash table of size " << this->size() << endl;
 }
 HashTable::~HashTable(){
 	//Hashtable destroyed
@@ -67,12 +65,13 @@ size_t HashTable::hash_function(ulint)
 }
 ulint HashTable::getValue(ulint)
 {
-	ulint placeholder;
-	return placeholder;
+	ulint val;
+	return val;
 }
-void HashTable::insert(ulint, ulint)
+void HashTable::insert(ulint key, ulint value)
 {
-	
+	this->table = new HashNode(key, value);
+	//this->HashNode = N;
 }
 void HashTable::erase(ulint)
 {
