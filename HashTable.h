@@ -58,21 +58,26 @@ size_t HashTable::size()
 {
 	return this->table->size();
 }
-size_t HashTable::hash_function(ulint)
+size_t HashTable::hash_function(ulint key)
 {
-	//size_t placeholder;
-	//return placeholder;
+	ulint index = key % this->table->size()-1;
+	return index;
 }
-ulint HashTable::getValue(ulint)
+ulint HashTable::getValue(ulint key)
 {
-	//ulint val = this->table->getValue();
-	//return val;
+	ulint index = this->hash_function(key);
+	ulint val = this->table->at(index).front().getValue();
+	return val;
 }
 void HashTable::insert(ulint key, ulint value)
 {
-	//HashNode h = HashNode(key, value);
-	this->table->insert(table->begin(), new HashNode(key, value));
-	//this->table->insert(h);
+	HashNode h = HashNode(key, value);
+	ulint index = this->hash_function(key);
+
+	list<HashNode> nodeList;
+	nodeList.push_front(h);
+	auto it = table->begin();
+	this->table->insert(it+index, nodeList);
 }
 void HashTable::erase(ulint)
 {
