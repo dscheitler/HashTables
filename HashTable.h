@@ -40,14 +40,24 @@ public:
 */
 HashTable::HashTable() {
 	cout << "Constructing";
-	this->table = new Table(11);
+	try{
+		this->table = new Table(11);
+	}
+	catch(...){
+		cout << "Out of memory, cannot allocate space for table" << endl;
+	}
 	this->num = 0;
 	cout << " a hash table of size " << this->size() << endl;
 
 }
 HashTable::HashTable(size_t size) {
 	cout << "Constructing";
-	this->table = new Table(size);
+	try{
+		this->table = new Table(size);
+	}
+	catch(...){
+		cout << "Out of memory, cannot allocate space for table" << endl;
+	}
 	this->num = 0;
 	cout << " a hash table of size " << this->size() << endl;
 }
@@ -81,7 +91,7 @@ void HashTable::insert(ulint key, ulint value)
 }
 void HashTable::erase(ulint)
 {
-	
+
 }
 void HashTable::rehash(size_t)
 {
