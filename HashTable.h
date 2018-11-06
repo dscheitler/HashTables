@@ -81,13 +81,15 @@ ulint HashTable::getValue(ulint key)
 }
 void HashTable::insert(ulint key, ulint value)
 {
-	HashNode h = HashNode(key, value);
+	//HashNode *h;
+	//h = new HashNode(key, value);
 	ulint index = this->hash_function(key);
 
-	list<HashNode> nodeList;
-	nodeList.push_front(h);
-	auto it = table->begin();
-	this->table->insert(it+index, nodeList);
+	//list<HashNode> nodeList;
+	//nodeList.push_front(h);
+	//auto it = table->begin();
+	this->table->at(index).emplace_front(key, value);
+	this->num = num+1;
 }
 void HashTable::erase(ulint)
 {
