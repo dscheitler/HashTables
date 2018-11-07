@@ -70,7 +70,7 @@ size_t HashTable::size()
 }
 size_t HashTable::hash_function(ulint key)
 {
-	ulint index = key % this->table->size()-1;
+	ulint index = key % this->table->size();
 	return index;
 }
 ulint HashTable::getValue(ulint key)
@@ -87,7 +87,7 @@ ulint HashTable::getValue(ulint key)
 	}
 	else
 	{
-		val = this->table->at(index).front().getValue();
+		throw HashTableError(1);
 	}
 	return val;
 }
@@ -112,11 +112,53 @@ void HashTable::erase(ulint key)
 {
 	ulint index = this->hash_function(key);
 	//auto it = this->table->at(index).begin();
-	this->table->at(index).clear();
+
+	if (this->table->at(index).size() > 1){
+
+		auto it = this->table->at(index).begin();
+		while (it->getKey() != key)
+		{
+			it++;
+		}
+		this->table->at(index).erase(it);
+	}
+	else{
+		this->table->at(index).clear();
+	}
 	this->num = num-1;
 }
-void HashTable::rehash(size_t)
+void HashTable::rehash(size_t tableSize)
 {
-	
+	int x = 0;
+	vector<HashNode> tempVector;
+	auto it = table->begin();
+	auto itEnd = table->end();
+	while (it != itEnd)
+	{
+		if (it->size() == 1)
+		{
+			tempVector.emplace_back(it->front().getKey(), it->front().getValue());
+		}
+		else if (it->size() > 1)
+		{
+			auto itList = this->table->at(x).begin();
+			auto itEnd = this->table->at(x).end();
+			while (itList != itEnd)
+			{
+				tempVector.emplace_back(itList->getKey(), itList->getValue());
+				itList++;
+			}
+		}
+		else{
+			//do nothing
+		}
+		it++;
+		x++;
+	}
+	this->table = new Table(tableSize);
+	for (ulint j = 0; j < tempVector.size(); j++){
+		this->insert(tempVector.at(j).getKey(), tempVector.at(j).getValue());
+	}
+	//this->table->resize(tableSize);
 }
 #endif
