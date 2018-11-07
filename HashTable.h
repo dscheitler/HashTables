@@ -17,7 +17,7 @@ class HashTable {
   size_t num;   // number of entries in the HashTable;
 
 public:
-  HashTable();       // constructor, initializes table of size 1;
+  HashTable();       // constructor, initializes table of size 11;
   HashTable(size_t); // constructor, requires size of table as arg
   ~HashTable();      // deconstructor
 
@@ -43,7 +43,7 @@ HashTable::HashTable() {
 	try{
 		this->table = new Table(11);
 	}
-	catch(...){
+	catch(bad_alloc& e){
 		cout << "Out of memory, cannot allocate space for table" << endl;
 	}
 	this->num = 0;
@@ -55,7 +55,7 @@ HashTable::HashTable(size_t size) {
 	try{
 		this->table = new Table(size);
 	}
-	catch(...){
+	catch(bad_alloc& e){
 		cout << "Out of memory, cannot allocate space for table" << endl;
 	}
 	this->num = 0;
@@ -76,7 +76,19 @@ size_t HashTable::hash_function(ulint key)
 ulint HashTable::getValue(ulint key)
 {
 	ulint index = this->hash_function(key);
-	ulint val = this->table->at(index).front().getValue();
+	ulint val;
+	if (!(this->table->at(index).empty())){
+		auto it = this->table->at(index).begin();
+		while (it->getKey() != key)
+		{
+			it++;
+		}
+		val = it->getValue();
+	}
+	else
+	{
+		val = this->table->at(index).front().getValue();
+	}
 	return val;
 }
 void HashTable::insert(ulint key, ulint value)
@@ -88,12 +100,20 @@ void HashTable::insert(ulint key, ulint value)
 	//list<HashNode> nodeList;
 	//nodeList.push_front(h);
 	//auto it = table->begin();
-	this->table->at(index).emplace_front(key, value);
+	if (!(this->table->at(index).empty())){
+		this->table->at(index).emplace_back(key, value);
+	}
+	else{
+		this->table->at(index).emplace_front(key, value);
+	}	
 	this->num = num+1;
 }
-void HashTable::erase(ulint)
+void HashTable::erase(ulint key)
 {
-
+	ulint index = this->hash_function(key);
+	//auto it = this->table->at(index).begin();
+	this->table->at(index).clear();
+	this->num = num-1;
 }
 void HashTable::rehash(size_t)
 {
