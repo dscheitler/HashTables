@@ -107,6 +107,7 @@ void HashTable::insert(ulint key, ulint value)
 		this->table->at(index).emplace_front(key, value);
 	}	
 	this->num = num+1;
+	this->table->resize(size()+1);
 }
 void HashTable::erase(ulint key)
 {
