@@ -22,6 +22,7 @@ public:
   ~HashTable();      // deconstructor
 
   size_t size(); // returns size of the hash table (number of buckets)
+  bool checkExists(ulint); //returns true if key already exists within hashtable
   size_t hash_function(ulint);  // the table's hash function
   ulint getValue(ulint);    // find and return data associated with key
 
@@ -68,9 +69,27 @@ size_t HashTable::size()
 {
 	return this->table->size();
 }
+bool HashTable::checkExists(ulint key){
+	ulint index = key % this->table->size();
+	if (!(this->table->at(index).empty())){
+		auto it = this->table->at(index).begin();
+		while (it->getKey() != key && it != it->end())
+		{
+			it++;
+		}
+		if (it->getKey() == key){
+			return true;
+		}
+	}
+	return false;
+	}
+}
 size_t HashTable::hash_function(ulint key)
 {
 	ulint index = key % this->table->size();
+	//if (!(this->table->at(index).empty()){
+	//	throw HashTableError(2);
+	//}
 	return index;
 }
 ulint HashTable::getValue(ulint key)
@@ -102,7 +121,7 @@ void HashTable::insert(ulint key, ulint value)
 	}	
 	this->num = num+1;
 
-	if (this->num == this->table->size()){
+	if (this->num == this->table->size()/2){
 		rehash(this->table->size()*2);
 	}
 	//causes test3.cpp to work and test2.cpp to break
