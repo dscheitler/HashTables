@@ -93,13 +93,7 @@ ulint HashTable::getValue(ulint key)
 }
 void HashTable::insert(ulint key, ulint value)
 {
-	//HashNode *h;
-	//h = new HashNode(key, value);
 	ulint index = this->hash_function(key);
-
-	//list<HashNode> nodeList;
-	//nodeList.push_front(h);
-	//auto it = table->begin();
 	if (!(this->table->at(index).empty())){
 		this->table->at(index).emplace_back(key, value);
 	}
@@ -107,7 +101,15 @@ void HashTable::insert(ulint key, ulint value)
 		this->table->at(index).emplace_front(key, value);
 	}	
 	this->num = num+1;
-	this->table->resize(size()+1);
+
+	if (this->num == this->table->size()){
+		rehash(this->table->size()*2);
+	}
+	//causes test3.cpp to work and test2.cpp to break
+	//if (this->num == this->table->size())
+	//{
+	//	this->table->resize(size()+1);
+	//}	
 }
 void HashTable::erase(ulint key)
 {
