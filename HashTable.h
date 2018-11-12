@@ -73,7 +73,8 @@ bool HashTable::checkExists(ulint key){
 	ulint index = key % this->table->size();
 	if (!(this->table->at(index).empty())){
 		auto it = this->table->at(index).begin();
-		while (it->getKey() != key && it != it->end())
+		auto itEnd = this->table->at(index).end();
+		while (it->getKey() != key && it != itEnd)
 		{
 			it++;
 		}
@@ -83,7 +84,6 @@ bool HashTable::checkExists(ulint key){
 	}
 	return false;
 	}
-}
 size_t HashTable::hash_function(ulint key)
 {
 	ulint index = key % this->table->size();
@@ -98,7 +98,8 @@ ulint HashTable::getValue(ulint key)
 	ulint val;
 	if (!(this->table->at(index).empty())){
 		auto it = this->table->at(index).begin();
-		while (it->getKey() != key)
+		auto itEnd = this->table->at(index).end();
+		while (it->getKey() != key && it != itEnd)
 		{
 			it++;
 		}
@@ -178,9 +179,11 @@ void HashTable::rehash(size_t tableSize)
 		x++;
 	}
 	this->table = new Table(tableSize);
+	cout << "Rehashing table:" << endl;
 	for (ulint j = 0; j < tempVector.size(); j++){
 		this->insert(tempVector.at(j).getKey(), tempVector.at(j).getValue());
 	}
+	cout << "Finished rehashing." << endl;
 	//this->table->resize(tableSize);
 }
 #endif
