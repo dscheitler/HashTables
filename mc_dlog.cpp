@@ -40,7 +40,7 @@ ulint powerOf(ulint base, ulint exponent){
 ulint orderofG(){ //performs first step of algorithm, returns order of g
 	HashTable ord;
 	//bool foundDuplicate = false;
-
+		for (int i = 0; i < sqrt(n); i++){
 		r = rand() % (n-1);
 		y = squareMultiply(g, r, n);
 		//ulint index = ord.hash_function(y);
@@ -56,6 +56,7 @@ ulint orderofG(){ //performs first step of algorithm, returns order of g
 		else{
 				ord.insert(y, r);
 			}
+		}
 	//if (foundDuplicate == false){
 	//	return n-1;
 	//}
