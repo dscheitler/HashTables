@@ -39,41 +39,37 @@ ulint powerOf(ulint base, ulint exponent){
 }
 ulint orderofG(){ //performs first step of algorithm, returns order of g
 	HashTable ord;
-	bool foundDuplicate = false;
+	//bool foundDuplicate = false;
 
-	for (int j = 0; j < sqrt(n); j++){
-		srand (time(NULL));
-		r = rand() % n-1;
+		r = rand() % (n-1);
 		y = squareMultiply(g, r, n);
 		//ulint index = ord.hash_function(y);
 		if (ord.checkExists(y)){
-			foundDuplicate = true;
-			if (r - (ord.getValue(y)) > 0){
+			//foundDuplicate = true;
+			if (r > (ord.getValue(y))){
 				return (r - (ord.getValue(y)));
 			}
-			else if ((ord.getValue(y)) - r > 0){
+			else if ((ord.getValue(y)) > r){
 				return ((ord.getValue(y)) - r);
 			}
 		}
 		else{
 				ord.insert(y, r);
 			}
-	}
-	if (foundDuplicate == false){
-		return n-1;
-	}
+	//if (foundDuplicate == false){
+	//	return n-1;
+	//}
 
-	return 0;
+	return n-1;
 }
 
 long discreteLog(){
 	HashTable A, B;
 	//ulint index;
 	for (int i = 0; i < sqrt(n); i++){
-		srand (time(NULL));
-		r = rand() % n-1;
+		r = rand() % n;
 		y = squareMultiply(g, r, n);
-		y = (a*y);
+		y = (a*y) % n;
 		//index = B.hash_function(y);
 		if (B.checkExists(y)){
 			return (B.getValue(y)) -r;
@@ -81,9 +77,8 @@ long discreteLog(){
 		else{
 			A.insert(y,r);
 		}
-		srand (time(NULL));
-		r = rand() % n-1;
-		y = powerOf(g,r);
+		r = rand() % (n-1);
+		y = squareMultiply(g,r,n);
 		//index = A.hash_function(y);
 		if (A.checkExists(y)){
 			return r - (A.getValue(y));
@@ -97,6 +92,7 @@ long discreteLog(){
 
 int main(int argc, char const *argv[])
 {
+	srand (time(NULL));
 	if (argc != 4){
 		cout << "Incorrect number of arguments, please enter 3 arguments." << endl;
 		return 1;
