@@ -8,7 +8,7 @@ using namespace std;
 ulint g, a, n, r, y; //g, a, n are user input (base, exponent, mod), r is random number, y is key
 
 
-ulint squareMultiply(ulint base, ulint exponent, ulint mod){
+ulint squareMultiply(ulint base, ulint exponent, ulint mod){ //performs x^y mod n efficiently
 	ulint x,e,n,result;
 	x = base;
 	e = exponent;
@@ -16,7 +16,7 @@ ulint squareMultiply(ulint base, ulint exponent, ulint mod){
 	result = 1;
 	while (e > 0)
     {
-		if (e % 2 == 1){
+		if (e % 2 == 1){ //if odd
 			result = (result * x) % n;
 		}
     		e = e >> 1;
@@ -26,6 +26,7 @@ ulint squareMultiply(ulint base, ulint exponent, ulint mod){
 
     return result;
 }
+/*
 ulint powerOf(ulint base, ulint exponent){
 	ulint result = base;
 	while (exponent > 1){
@@ -37,6 +38,7 @@ ulint powerOf(ulint base, ulint exponent){
 	}
 	return result;
 }
+*/
 ulint orderofG(){ //performs first step of algorithm, returns order of g
 	HashTable ord;
 	//bool foundDuplicate = false;
@@ -93,7 +95,7 @@ long discreteLog(){
 
 int main(int argc, char const *argv[])
 {
-	srand (time(NULL));
+	srand (time(NULL)); //seeds random number at current time
 	if (argc != 4){
 		cout << "Incorrect number of arguments, please enter 3 arguments." << endl;
 		return 1;

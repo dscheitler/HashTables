@@ -70,15 +70,15 @@ size_t HashTable::size()
 	return this->table->size();
 }
 bool HashTable::checkExists(ulint key){
-	ulint index = key % this->table->size();
-	if (!(this->table->at(index).empty())){
+	ulint index = key % this->table->size(); //get index of table
+	if (!(this->table->at(index).empty())){ //if not empty
 		auto it = this->table->at(index).begin();
 		auto itEnd = this->table->at(index).end();
 		while (it->getKey() != key && it != itEnd)
 		{
 			it++;
 		}
-		if (it->getKey() == key){
+		if (it->getKey() == key){ //if key is found
 			return true;
 		}
 	}
@@ -86,7 +86,7 @@ bool HashTable::checkExists(ulint key){
 	}
 size_t HashTable::hash_function(ulint key)
 {
-	ulint index = key % this->table->size();
+	ulint index = key % this->table->size(); //get index of table
 	//if (!(this->table->at(index).empty()){
 	//	throw HashTableError(2);
 	//}
@@ -94,7 +94,7 @@ size_t HashTable::hash_function(ulint key)
 }
 ulint HashTable::getValue(ulint key)
 {
-	ulint index = this->hash_function(key);
+	ulint index = this->hash_function(key); //get index of table
 	ulint val;
 	if (!(this->table->at(index).empty())){
 		auto it = this->table->at(index).begin();
@@ -103,7 +103,7 @@ ulint HashTable::getValue(ulint key)
 		{
 			it++;
 		}
-		val = it->getValue();
+		val = it->getValue(); //val is value connected to key passed as a parameter
 	}
 	else
 	{
@@ -115,15 +115,15 @@ void HashTable::insert(ulint key, ulint value)
 {
 	ulint index = this->hash_function(key);
 	if (!(this->table->at(index).empty())){
-		this->table->at(index).emplace_back(key, value);
+		this->table->at(index).emplace_back(key, value); //creates hashnode at back if not empty
 	}
 	else{
-		this->table->at(index).emplace_front(key, value);
+		this->table->at(index).emplace_front(key, value); //creates hashnode at front if empty
 	}	
 	this->num = num+1;
 
-	if (this->num == this->table->size()/2){
-		rehash(this->table->size()*2);
+	if (this->num == this->table->size()/2){ //if num of entries equals half size
+		rehash(this->table->size()*2); //increases table size by x2 and redoes the indices
 	}
 	//causes test3.cpp to work and test2.cpp to break
 	//if (this->num == this->table->size())
@@ -136,7 +136,7 @@ void HashTable::erase(ulint key)
 	ulint index = this->hash_function(key);
 	//auto it = this->table->at(index).begin();
 
-	if (this->table->at(index).size() > 1){
+	if (this->table->at(index).size() > 1){ //remove individual node if list size > 1
 
 		auto it = this->table->at(index).begin();
 		while (it->getKey() != key)
@@ -146,14 +146,14 @@ void HashTable::erase(ulint key)
 		this->table->at(index).erase(it);
 	}
 	else{
-		this->table->at(index).clear();
+		this->table->at(index).clear(); //else remove entire list
 	}
 	this->num = num-1;
 }
 void HashTable::rehash(size_t tableSize)
 {
 	int x = 0;
-	vector<HashNode> tempVector;
+	vector<HashNode> tempVector; //stores nodes temporarily
 	auto it = table->begin();
 	auto itEnd = table->end();
 	while (it != itEnd)
@@ -178,9 +178,9 @@ void HashTable::rehash(size_t tableSize)
 		it++;
 		x++;
 	}
-	this->table = new Table(tableSize);
+	this->table = new Table(tableSize); //create new table to replace old one
 	cout << "Rehashing table:" << endl;
-	for (ulint j = 0; j < tempVector.size(); j++){
+	for (ulint j = 0; j < tempVector.size(); j++){ //insert all old nodes into new table
 		this->insert(tempVector.at(j).getKey(), tempVector.at(j).getValue());
 	}
 	cout << "Finished rehashing." << endl;
